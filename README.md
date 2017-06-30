@@ -1,2 +1,3 @@
-# Ultra_wechat
-It is a proj made for a more interesting wechat chat bot
+# Ultra Wechat
+
+This is a proj made for a better wechat bot with tons a mount of memes.
