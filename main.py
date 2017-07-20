@@ -1,7 +1,12 @@
 from wxpy import *
+from meme_maker import *
 import requests
 import time
-from meme_maker import *
+import json
+import re
+
+
+
 
 # Init the env, login
 bot = Bot()
@@ -15,7 +20,7 @@ data = {
 	"info": "你好呀",
 	"userid":"123"
 }
-
+dummy_dict = dict()
 
 # @bot.register()
 # def just_print(msg):
@@ -58,7 +63,6 @@ def auto_reply(msg):
         get_meme()
         msg.sender.send_image("out.png")
         return
-        return
     else:
         # 回复消息内容和类型
         try:
@@ -74,7 +78,10 @@ def auto_reply(msg):
 
 @bot.register(bot.friends(), PICTURE)
 def auto_reply(msg):
-    print(msg.raw)
+    x = msg.raw['Content']
+    print(re.findall("cdnurl=(.*) des",x, re.S))
+    print("=================================")
+    print(msg.raw['Content'])
     return "我还看不懂这个图呢"
 
 @bot.register(bot.friends(), TEXT)
