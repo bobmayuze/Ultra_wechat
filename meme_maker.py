@@ -23,4 +23,7 @@ def get_meme():
 	draw.text(((width-tw)*0.4, height* 0.8),msg,(0,0,0),font=font)
 	img.save("out.png")
 
-# get_meme()
+def get_meme_by_emotion(emotion):
+	
+	return "并不想理你，并向你扔了一只旋转狗"
+

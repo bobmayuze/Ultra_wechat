@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+#coding: utf-8
 import http.client 
 import urllib.request 
 import urllib.parse
@@ -26,9 +28,28 @@ try:
     response = conn.getresponse()
     data = response.read()
     string_d = data.decode("utf-8")
-    json_obj = json.load(string_d)
+    json_obj = json.loads(string_d)
     print(data)
     conn.close()
 except Exception as e:
     print(e.args)
-####################################
+
+
+def get_emotion_from_img(img_url):
+    body = "{ 'url': '"+img_url+"' }"
+    print(body)
+    try:
+        # NOTE: You must use the same region in your REST call as you used to obtain your subscription keys.
+        #   For example, if you obtained your subscription keys from westcentralus, replace "westus" in the 
+        #   URL below with "westcentralus".
+        conn = http.client.HTTPSConnection('westus.api.cognitive.microsoft.com')
+        conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
+        response = conn.getresponse()
+        data = response.read()
+        string_d = data.decode("utf-8")
+        json_obj = json.loads(string_d)
+        conn.close()
+        return json_obj[0]['scores']
+    except Exception as e:
+        print(e.args)
+        return "网络貌似不太好，等下再试试吧"

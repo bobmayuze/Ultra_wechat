@@ -1,5 +1,6 @@
 from wxpy import *
 from meme_maker import *
+from emotional import *
 import requests
 import time
 import json
@@ -28,25 +29,6 @@ dummy_dict = dict()
 
 
 
-
-# Auto reply all friends test message
-@bot.register(bot.friends(), TEXT)
-def auto_reply(msg):
-    if isinstance(msg.chat, Group) and not msg.is_at:
-        return
-    else:
-        return "message received"
-        # 回复消息内容和类型
-        # time.sleep(5)
-        # print(msg.raw)
-        # data["info"] = msg.text
-        # try:
-        #     res = requests.post(apiUrl, data = data).json()
-        #     return res["text"]
-        # except:
-        #     return "Connection lost"
-
-
 @bot.register(Group, TEXT)
 def auto_reply(msg):
     # 如果是群聊，但没有被 @，则不回复
@@ -69,7 +51,7 @@ def auto_reply(msg):
             print("==EXECUTRED==")
             get_meme()
             msg.sender.send_image("out.png")
-            return
+            return "lolol"
             # data["info"] = msg.text
             # res = requests.post(apiUrl, data = data).json()
             # return res["text"]
@@ -78,11 +60,15 @@ def auto_reply(msg):
 
 @bot.register(bot.friends(), PICTURE)
 def auto_reply(msg):
-    x = msg.raw['Content']
-    print(re.findall("cdnurl=(.*) des",x, re.S))
+    raw_content = msg.raw['Content']
+    url = re.findall("cdnurl=(.*) des",raw_content, re.S)
+    real_url = re.findall("\"(.*)\"",url[0], re.S)[0]
     print("=================================")
-    print(msg.raw['Content'])
-    return "我还看不懂这个图呢"
+    emotional_data = get_emotion_from_img(real_url)
+    print(emotional_data)
+    # print(msg.raw['Content'])
+    # return "我还看不懂这个图呢"
+    return emotional_data
 
 @bot.register(bot.friends(), TEXT)
 def auto_r(msg):
